@@ -1,0 +1,87 @@
+{
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "不要求每条引用都不可替代。ALCE 的 citation precision 不是要找出一个“最小不可替代的引用集合”，而是检测哪些引用是“irrelevant”（不可相关的）：即该引用自身不能支持语句，且去掉它后其余引用仍然能支持该语句。论文明确写明他们“does not require citing a minimal set”，并且允许人类惯用的冗余引用（redundant sources）存在，从而不应把冗余引用一律视为错误。",
+      "evidence": [
+        {
+          "source_id": "ALCE-P4",
+          "start_line": 123,
+          "end_line": 131
+        },
+        {
+          "source_id": "ALCE-P5",
+          "start_line": 17,
+          "end_line": 29
+        }
+      ],
+      "limitations": "结论基于文中对 precision 设计的陈述；文中同时给出了‘irrelevant’的形式化定义，但并未提供对所有冗余情形（例如部分支持的细粒度判断）的自动化处理方法，故对极端或复杂的冗余情形的处理细节需注意（参见附录 E 的讨论）。"
+    },
+    {
+      "id": "D2",
+      "answer": "citation recall 的分母是模型生成中被评估的所有“statement”数量：他们先对每个 statement 计算一个 0/1 的 citation recall（并对所有 statement 求平均）。对单个 statement，记 Ci 为其被引用的所有段落，citation recall 为 1 的充要条件是 Ci 非空且 NLI 模型判定 concat(Ci) 对该 statement 的蕴含为真（即 ϕ(concat(Ci), s_i)=1）。这里的“联合蕴含”指把该 statement 的所有被引用段落按顺序拼接为一个前提（concat(Ci)），再用 NLI 模型判断该拼接前提是否完全支持（entail）该 statement。",
+      "evidence": [
+        {
+          "source_id": "ALCE-P4",
+          "start_line": 110,
+          "end_line": 118
+        },
+        {
+          "source_id": "ALCE-P4",
+          "start_line": 94,
+          "end_line": 96
+        },
+        {
+          "source_id": "ALCE-P4",
+          "start_line": 115,
+          "end_line": 122
+        }
+      ],
+      "limitations": "以上解释严格依据文中定义；文中使用 NLI 模型判定“fully support”，但并未保证 NLI 判定等同于客观事实（见附录 E 的局限性讨论），因此在实践中把 NLI 输出作为真值存在潜在风险。"
+    },
+    {
+      "id": "D3",
+      "answer": "若两条引用各自都能完全（fully）支持同一句话，按文中定义它们不会因“冗余”而被判为 irrelevant，也不会被因冗余而处罚。理由是 irrelevant 的定义要求该引用自身不能支持该语句（ϕ(ci,j, s_i)=0）且去掉它后其余引用仍能支持；若某引用自身能够完全支持（ϕ(ci,j, s_i)=1），条件 (a) 不成立，因此该引用不会被标记为 irrelevant。同时论文指出 precision 要求 recall=1 且引用本身非 irrelevant 才给该引用 precision=1，因此两个都完全支持时两条都会计为精确引用。",
+      "evidence": [
+        {
+          "source_id": "ALCE-P5",
+          "start_line": 21,
+          "end_line": 29
+        },
+        {
+          "source_id": "ALCE-P4",
+          "start_line": 123,
+          "end_line": 131
+        },
+        {
+          "source_id": "ALCE-P5",
+          "start_line": 24,
+          "end_line": 27
+        }
+      ],
+      "limitations": "结论基于文中给出的形式化定义；但文中也指出存在‘部分支持（partial support）’的角落情况（附录 E），当一个引用只部分支持而其他引用联合完全支持时，自动化算法可能误判，这一点不影响上面针对“各自完全支持”的直接情况。"
+    },
+    {
+      "id": "D4",
+      "answer": "附录 E 指出 ALCE 的引用评估有明显局限：当前的 precision 判定无法识别“部分支持”——当某引用仅提供部分信息但与其它引用一起构成完整支持时，该引用会被错误地算作 irrelevant，从而被错罚。文中还说明自动化识别“部分支持”很困难：现有模型无法可靠判断部分支持，尝试用 ChatGPT 提示也效果差，作者因此把改进作为未来工作（收集监督数据训练更好的 ϕ）。因此不要把 NLI 的判定直接等同为事实真值——文中虽用 ϕ(concat(Ci), s_i)=1 作为“基于所给来源可断定为真”的准则，但同时在附录中承认该自动化判定在部分支持、判别能力不足时会产生错误，需以人工或更精细的方法校验事实真值。",
+      "evidence": [
+        {
+          "source_id": "ALCE-P15",
+          "start_line": 41,
+          "end_line": 55
+        },
+        {
+          "source_id": "ALCE-P15",
+          "start_line": 56,
+          "end_line": 65
+        },
+        {
+          "source_id": "ALCE-P4",
+          "start_line": 119,
+          "end_line": 122
+        }
+      ],
+      "limitations": "基于文中陈述，能确定的是当前自动化 ϕ 在‘部分支持’情形下的不足；但文中未给出系统在各种错误类型下的量化误差率或具体示例统计，故无法从所给文本精确量化 NLI 判定导致的误判概率或在多少场景下应完全不信任 NLI。"
+    }
+  ]
+}

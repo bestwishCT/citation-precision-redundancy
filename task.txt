@@ -1,0 +1,2 @@
+ALCE的citation precision是否要求每条引用不可替代？D1解释citation recall的分母和联合蕴含；D2准确展开irrelevant的两个条件以及recall=1前提；D3考虑两条引用各自都完全支持同一句，是否都会因冗余被罚，并说明理由；D4解释附录E部分支持的局限，不把NLI结果当事实真值。
+只根据所供原文。输出严格JSON，含decisions数组，id为D1至D4，各含answer、evidence数组（source_id、start_line、end_line整数且含两端）和limitations。无需重抄原文，按行定位。证据不足须明说。约1000中文字。

@@ -1,0 +1,84 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "ALCE-P4",
+      "start_line": 123,
+      "end_line": 131,
+      "text": "Citation precision. Our citation precision evalua-\ntion detects citations that are irrelevant, but it does\nnot require citing a minimal set. We follow this de-\nsign because human writing often cites redundant\nsources to enhance credibility; human readers may\nalso appreciate multiple citations, especially when\nit pertains to critical claims such as medical advice.\nWe calculate the citation precision for each ci-\ntation (0 or 1) and average over all citations in the"
+    },
+    {
+      "decision": "D1",
+      "source_id": "ALCE-P5",
+      "start_line": 17,
+      "end_line": 29,
+      "text": "response. We first define if a citation is “irrele-\nvant”. Intuitively, a citationci,jis “irrelevant” if (a)\nci,jitself cannot supportsi and (b) removingci,j\ndoes not affect the rest of the citations to support\nsi. Formally,ci,jis “irrelevant” if and only if\n(a) ϕ(ci,j,s i) = 0 , AND\n(b) ϕ(concat(Ci\\{ci,j}),s i) = 1 .\nci,j has a precision of 1 if si has recall =1 and\nci,j is not irrelevant. For example (Figure 3),\nwhen s3 cites three references [2][4][5] and\nrecall=1, [2] is “irrelevant” ifϕ([2],s 3) = 0 and\nϕ([4][5],s 3) = 1 . For condition (b) to work, we\nset recall =1 as a prerequisite for precision = 1 ."
+    },
+    {
+      "decision": "D2",
+      "source_id": "ALCE-P4",
+      "start_line": 110,
+      "end_line": 118,
+      "text": "Citation recall. We calculate the citation recall of\neach statement (0 or 1) and average over all state-\nments in the model response. For each statementsi,\nits citation recall is 1 if and only if there is at least\none citation (Ci̸=∅) and ϕ(concat(Ci),s i) = 1 ,\nwhere ϕ(premise, hypothesis) is the NLI model\nthat outputs 1 if the premise entails the hypoth-\nesis, and 0 otherwise; concat(Ci) concatenates all\npassages inCi together (details in §C). The NLI"
+    },
+    {
+      "decision": "D2",
+      "source_id": "ALCE-P4",
+      "start_line": 94,
+      "end_line": 96,
+      "text": "Recall = 1 if the concatenation of all cited passages fully supports the segment.\nWe use an NLI model to determine “fully support”.\nPrecision = 1"
+    },
+    {
+      "decision": "D2",
+      "source_id": "ALCE-P4",
+      "start_line": 115,
+      "end_line": 122,
+      "text": "where ϕ(premise, hypothesis) is the NLI model\nthat outputs 1 if the premise entails the hypoth-\nesis, and 0 otherwise; concat(Ci) concatenates all\npassages inCi together (details in §C). The NLI\nevaluation is in accordance with the attributable to\nidentified sources (AIS) framework (Rashkin et al.,\n2023):ϕ(concat(Ci),s i) = 1 implies thatsi is true\nbased solely on concat(Ci)."
+    },
+    {
+      "decision": "D3",
+      "source_id": "ALCE-P5",
+      "start_line": 21,
+      "end_line": 29,
+      "text": "si. Formally,ci,jis “irrelevant” if and only if\n(a) ϕ(ci,j,s i) = 0 , AND\n(b) ϕ(concat(Ci\\{ci,j}),s i) = 1 .\nci,j has a precision of 1 if si has recall =1 and\nci,j is not irrelevant. For example (Figure 3),\nwhen s3 cites three references [2][4][5] and\nrecall=1, [2] is “irrelevant” ifϕ([2],s 3) = 0 and\nϕ([4][5],s 3) = 1 . For condition (b) to work, we\nset recall =1 as a prerequisite for precision = 1 ."
+    },
+    {
+      "decision": "D3",
+      "source_id": "ALCE-P4",
+      "start_line": 123,
+      "end_line": 131,
+      "text": "Citation precision. Our citation precision evalua-\ntion detects citations that are irrelevant, but it does\nnot require citing a minimal set. We follow this de-\nsign because human writing often cites redundant\nsources to enhance credibility; human readers may\nalso appreciate multiple citations, especially when\nit pertains to critical claims such as medical advice.\nWe calculate the citation precision for each ci-\ntation (0 or 1) and average over all citations in the"
+    },
+    {
+      "decision": "D3",
+      "source_id": "ALCE-P5",
+      "start_line": 24,
+      "end_line": 27,
+      "text": "ci,j has a precision of 1 if si has recall =1 and\nci,j is not irrelevant. For example (Figure 3),\nwhen s3 cites three references [2][4][5] and\nrecall=1, [2] is “irrelevant” ifϕ([2],s 3) = 0 and"
+    },
+    {
+      "decision": "D4",
+      "source_id": "ALCE-P15",
+      "start_line": 41,
+      "end_line": 55,
+      "text": "E Citation Recall Discussion\nOur citation precision evaluation cannot detect a\ncitation that partially supports the statement and\nhence will falsely penalize it. Consider a state-\nments3 and its citations [2][4][5]: if [2] entails\npartial information ofs3 that [4][5] also entails,\n[2] will be counted as “irrelevant” while it should\nnot be penalized. Liu et al. (2023) conduct hu-\nman evaluation on citation precision in a different\nway: For each citation, they ask annotators to judge\nwhether the citation (1) fully support, (2) partially\nsupport, or (3) does not supportsi. One citationci,j\nis precise if (a)ci,jfully supportssi or (b)Ci fully\nsupportssi,ci,jpartially supportssi, and noc∈Ci\nalone fully supportssi. This evaluation solved the"
+    },
+    {
+      "decision": "D4",
+      "source_id": "ALCE-P15",
+      "start_line": 56,
+      "end_line": 65,
+      "text": "corner case we mentioned in the main paper (one\ncitation partially supports the claim but is identi-\nfied as “irrelevant”). However, it is challenging to\nconduct such evaluation automatically, as there is\nno existing model that can judge whether a cita-\ntion “partially” supports a claim. We also explore\nprompting ChatGPT to conduct such a task, which\nyields poor results. We defer it to future work to\ncollect supervised data to train a betterϕthat can\ndetect “partial support”."
+    },
+    {
+      "decision": "D4",
+      "source_id": "ALCE-P4",
+      "start_line": 119,
+      "end_line": 122,
+      "text": "evaluation is in accordance with the attributable to\nidentified sources (AIS) framework (Rashkin et al.,\n2023):ϕ(concat(Ci),s i) = 1 implies thatsi is true\nbased solely on concat(Ci)."
+    }
+  ]
+}
